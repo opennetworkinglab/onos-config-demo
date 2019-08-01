@@ -2,7 +2,10 @@
 Simple application to demonstrate how to interact with µONOS configuration subsystem.
 
 This is still work in progress. There are two separate experiments here, but they are not yet integrated.
-This requires Python 3.7.4 or greater. 
+This requires Python 3.7.4 or greater. You will also need to make sure that the requirements have been 
+installed as well via:
+
+```pip3 install -r requirements.txt```
 
 ### Python gNMI client
 Allows get, set and delete of values from command-line now (drawn from the deprecated gnxi repo), but serves
@@ -10,8 +13,8 @@ as a demonstration of how to establish a gNMI connection to the onos-config serv
 
 Here is an example usage of a get request against locally running `onos-config` gNMI northbound.
 ```
-export $CP=$HOME/go/src/github.com/onosproject/onos-config/test/certs
-python py_gnmicli.py -e localhost:5150 -pkey $CP/client1.key -cchain $CP/client1.crt -rcert $CP/onf.cacrt \
+export CP=$HOME/go/src/github.com/onosproject/onos-config/test/certs
+python3 py_gnmicli.py -e localhost:5150 -pkey $CP/client1.key -cchain $CP/client1.crt -rcert $CP/onf.cacrt \
     -t localhost-1 -x /system/
 ```
 
