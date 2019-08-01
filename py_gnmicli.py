@@ -7,6 +7,8 @@ import os
 import re
 import sys
 
+from ifcreate import ifcreate
+
 import six
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "gnmi"))
@@ -51,7 +53,7 @@ def _create_parser():
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('-e', '--endpoint', type=str, help='gNMI address:port endpoint', required=True)
     parser.add_argument('-t', '--target', type=str, help='gNMI target', required=True)
-    parser.add_argument('-m', '--mode', choices=['get', 'set', 'delete'], help='get, set or delete', default='get')
+    parser.add_argument('-m', '--mode', choices=['get', 'set', 'delete', 'ifadd'], help='get, set or delete or ifadd', default='get')
     parser.add_argument('-val', '--value', type=str, help='value', required=False)
     parser.add_argument('-pkey', '--private_key', type=str, help='Private key file path', required=True)
     parser.add_argument('-rcert', '--root_cert', type=str, help='Root CA file path', required=True)
@@ -139,6 +141,11 @@ def main():
         print(response)
     elif mode == 'delete':
         response = stub.Set(gnmi_pb2.SetRequest(delete=[paths]))
+        print(response)
+    elif mode == 'ifadd':
+        ifjson = ifcreate("eth2")
+        print("Sending\n", ifjson)
+        response = stub.Set(gnmi_pb2.SetRequest(update=[gnmi_pb2.Update(path=paths, val=_get_val(ifjson), )]))
         print(response)
 
 if __name__ == '__main__':
